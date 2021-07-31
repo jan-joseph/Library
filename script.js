@@ -18,7 +18,7 @@ const hideBookForm = () => {
     overlay.classList.remove('active');
 }
 
-function Book(title,author, numOfPages, readStatus = false) {
+function Book(title,author, numOfPages, readStatus) {
     this.author = author
     this.title = title
     this.numOfPages = numOfPages
@@ -33,10 +33,22 @@ const createNewBookObject = () => {
         document.getElementById('readStatus').checked
     )
 }
-
 const removeBook = (e) => {
     const title = e.target.parentNode.firstChild.innerHTML.replaceAll('"', '')
     myLibrary = myLibrary.filter(a => (a.title !== title));
+    saveLocal();
+    libraryGenerate();
+}
+
+const toggleReadStatus = (e) => {
+    const title = e.target.parentNode.firstChild.innerHTML.replaceAll('"', '')
+    myLibrary.forEach(a => {
+        if(a.title === title){
+            console.log(a);
+            a.readStatus = !a.readStatus;
+            console.log(a);
+        }       
+    });
     saveLocal();
     libraryGenerate();
 }
@@ -58,6 +70,7 @@ const createBookCard = (book) => {
     removeBtn.classList.add('btn','bgc-caution','tc-white','mt-2');
 
     removeBtn.addEventListener('click',removeBook);
+    toggleBtn.addEventListener('click',toggleReadStatus);
 
     title.textContent = book.title;
     author.textContent = book.author;
@@ -110,9 +123,7 @@ const getLocal = () => {
       }
 }
 
-Book.prototype.toggleReadStatus = () => {
-    this.readStatus = this.readStatus?false:true;
-}
+
 function bookToLibrary() {
     
 }
