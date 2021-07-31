@@ -5,6 +5,7 @@ const formModal = document.getElementById('modal')
 const overlay = document.getElementById('overlay')
 const submitBtn = document.getElementById('submit-btn')
 
+const addBookForm = document.getElementById('addBookForm')
 const library = document.getElementById('library')
 
 
@@ -33,6 +34,12 @@ const createNewBookObject = () => {
     )
 }
 
+const removeBook = (e) => {
+    const title = e.target.parentNode.firstChild.innerHTML.replaceAll('"', '')
+    myLibrary = myLibrary.filter(a => (a.title !== title));
+    saveLocal();
+    libraryGenerate();
+}
 const createBookCard = (book) => {
     const bookCard = document.createElement('div');
     const title = document.createElement('h3');
@@ -50,6 +57,8 @@ const createBookCard = (book) => {
     toggleBtn.classList.add('btn','bgc-toggle','tc-black');
     removeBtn.classList.add('btn','bgc-caution','tc-white','mt-2');
 
+    removeBtn.addEventListener('click',removeBook);
+
     title.textContent = book.title;
     author.textContent = book.author;
     pageNumber.textContent = `${book.numOfPages} pages`;
@@ -63,11 +72,11 @@ const createBookCard = (book) => {
     bookCard.appendChild(read);
     bookCard.appendChild(toggleBtn);
     bookCard.appendChild(removeBtn);
-    return bookCard
+    return bookCard;
 }
 
 
-const addToLibrary = () => {
+const libraryGenerate = () => {
     while(library.firstChild){
         library.firstChild.remove();
     }
@@ -81,7 +90,9 @@ const formSubmit = (e) => {
     console.log('success');
     const newBook = createNewBookObject();
     myLibrary.push(newBook);
-    addToLibrary();
+    libraryGenerate();
+    hideBookForm();
+    addBookForm.reset();
 }
 
 // Local Storage
@@ -111,7 +122,7 @@ function removeBookfromLibrary() {
 }
 
 getLocal();
-addToLibrary();
+libraryGenerate();
 addBookBtn.addEventListener('click', showBookForm);
 overlay.addEventListener('click', hideBookForm);
 submitBtn.addEventListener('click', formSubmit);
