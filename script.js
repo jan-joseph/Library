@@ -122,18 +122,10 @@ const getLocal = () => {
         myLibrary = []
       }
 }
-
-
-function bookToLibrary() {
-    
-}
-
-function removeBookfromLibrary() {
-    
-}
-
+// Initial
 getLocal();
 libraryGenerate();
+// Event Listerners
 addBookBtn.addEventListener('click', showBookForm);
 overlay.addEventListener('click', hideBookForm);
 submitBtn.addEventListener('click', formSubmit);
