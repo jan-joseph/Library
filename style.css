@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 :root{
     --primary-color:#5d040b;
@@ -7,7 +7,7 @@
     --toggle:gold;
     --black:black;
     --white:white;
-    --font-family:sans-serif;
+    --font-family: 'Varela Round', sans-serif;
 
 }
 @media (prefers-reduced-motion: no-preference) {
