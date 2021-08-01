@@ -1,6 +1,6 @@
 # Library-JS
 
-Library
+Features
 ----------------------
 * Local Storage enabled.
 * Bootstrap 5 used for styling.
