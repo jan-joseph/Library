@@ -1,4 +1,4 @@
-# Library-JS
+# Library
 
 Features
 ----------------------
@@ -13,6 +13,7 @@ Points of Improvement
 3) Better Styling for Cards
 4) Hover Styling for Buttons and Cards
 5) Check for already existing Titles.
+6) Favicon
 
 Site
 ----------------------
