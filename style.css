@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 :root{
-    --primary-color:#5d040b;
-    --secondary-color:#045d56;
+    --primary-color:#ffdcbb;
+    --dark-color:#e44029;
+    --secondary-color:#bbdeff;
     --caution:crimson;
     --toggle:gold;
     --black:black;
@@ -43,6 +44,9 @@ ul {
 }
 .bgc-secondary {
     background-color: var(--secondary-color)!important;
+}
+.bgc-dark {
+    background-color: var(--dark-color)!important;
 }
 .bgc-caution {
     background-color: var(--caution)!important;
@@ -111,4 +115,18 @@ input[type=checkbox]{
     #library {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+header .btn {
+    transition: all 1s ease 0s;
+}
+header .btn:hover {
+    transition: all 1s ease 0s;
+    transform: scale(1.2);
+}
+main .btn {
+    transition: .5s;
+}
+main .btn:hover {
+    transition: .5s;
+    border-radius: 1rem;
 }

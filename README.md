@@ -1,20 +1,18 @@
 # Library
 
-Features
+### Features
 ----------------------
 * Local Storage enabled.
 * Bootstrap 5 used for styling.
 
 
-Points of Improvement
+### Points of Improvement
 ----------------------
-1) Module Pattern
-2) Google Login options -> Tieup to Firebase
-3) Better Styling for Cards
-4) Hover Styling for Buttons and Cards
-5) Check for already existing Titles.
-6) Favicon
+1. Google Login options -> Tieup to Firebase
+2. Better Styling for Cards
+3. Check for already existing Titles.
+4. Favicon
 
-Site
+### Site
 ----------------------
 https://jan-joseph.github.io/Library/
