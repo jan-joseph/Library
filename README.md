@@ -16,4 +16,4 @@ Points of Improvement
 
 Site
 ----------------------
-https://jan-joseph.github.io/Library-JS/
+https://jan-joseph.github.io/Library/
