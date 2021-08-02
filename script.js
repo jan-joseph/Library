@@ -1,4 +1,5 @@
 const Library = ( () => {
+
     let myLibrary;
 
     const addBookBtn = document.getElementById('add-book')
@@ -9,29 +10,23 @@ const Library = ( () => {
     const addBookForm = document.getElementById('addBookForm')
     const libraryGrid = document.getElementById('library')
 
-    const getLocal = () => {
-        const books = JSON.parse(localStorage.getItem('library'))
-        if (books) {
-            myLibrary = books;
-          } else {
-            myLibrary = []
-          }
-    };
+    // Intialize the Libray Array from Local Storage values.
+    const intializeLibrary = (books) => {
+        myLibrary = books;
+    }
 
-    const saveLocal = () => {
-        localStorage.setItem('library', JSON.stringify(myLibrary))
-    };
-
-    const showBookForm = () => {
+    // Handling the Modal Windows
+    const _showBookForm = () => {
         formModal.classList.add('active');
         overlay.classList.add('active');
     };
-    const hideBookForm = () => {
+    const _hideBookForm = () => {
         formModal.classList.remove('active');
         overlay.classList.remove('active');
     };
     
-    const createNewBookObject = () => {
+    // To Return a new Book Object taken from the Modal Form
+    const _createNewBookObject = () => {
         return {
             title:document.getElementById('book-name').value,
             author:document.getElementById('author-name').value,
@@ -39,24 +34,29 @@ const Library = ( () => {
             readStatus:document.getElementById('readStatus').checked
         }
     }
-    const removeBook = (e) => {
+
+    // Remove the Book from Library Grid
+    const _removeBook = (e) => {
         const title = e.target.parentNode.firstChild.innerHTML.replaceAll('"', '')
         myLibrary = myLibrary.filter(a => (a.title !== title));
-        saveLocal();
+        Storage.saveLocal();
         libraryGenerate();
     };
     
-    const toggleReadStatus = (e) => {
+    // Toggle the Read Status of the Book in Grid
+    const _toggleReadStatus = (e) => {
         const title = e.target.parentNode.firstChild.innerHTML.replaceAll('"', '')
         myLibrary.forEach(a => {
             if(a.title === title){
                 a.readStatus = !a.readStatus;
             }       
         });
-        saveLocal();
+        Storage.saveLocal(myLibrary);
         libraryGenerate();
     };
-    const createBookCard = (book) => {
+
+    // Create a Book Card HTML Element and return it
+    const _createBookCard = (book) => {
         const bookCard = document.createElement('div');
         const titleElement = document.createElement('h3');
         const authorElement = document.createElement('p');
@@ -73,8 +73,8 @@ const Library = ( () => {
         toggleBtn.classList.add('btn','bgc-toggle','tc-black','border-dark');
         removeBtn.classList.add('btn','bgc-caution','tc-white','mt-2','border-dark');
     
-        removeBtn.addEventListener('click',removeBook);
-        toggleBtn.addEventListener('click',toggleReadStatus);
+        removeBtn.addEventListener('click',_removeBook);
+        toggleBtn.addEventListener('click',_toggleReadStatus);
     
         titleElement.textContent = book.title;
         authorElement.textContent = book.author;
@@ -92,35 +92,54 @@ const Library = ( () => {
         return bookCard;
     };
     
-    
+    // Generate the library grid from Library Array
     const libraryGenerate = () => {
-        while(library.firstChild){
-            library.firstChild.remove();
+        while(libraryGrid.firstChild){
+            libraryGrid.firstChild.remove();
         }
         for(let i=0 ; i < myLibrary.length ; i++){
-            library.append(createBookCard(myLibrary[i]));
+            libraryGrid.append(_createBookCard(myLibrary[i]));
         }
-        saveLocal();
+        Storage.saveLocal(myLibrary);
     };
     
-    const formSubmit = (e) => {
-        myLibrary.push(createNewBookObject());
+    const _formSubmit = (e) => {
+        myLibrary.push(_createNewBookObject());
         libraryGenerate();
-        hideBookForm();
+        _hideBookForm();
         addBookForm.reset();
     };
 
     // Event Listerners
-    addBookBtn.addEventListener('click', showBookForm);
-    overlay.addEventListener('click', hideBookForm);
-    submitBtn.addEventListener('click', formSubmit);
+    addBookBtn.addEventListener('click', _showBookForm);
+    overlay.addEventListener('click', _hideBookForm);
+    submitBtn.addEventListener('click', _formSubmit);
 
     return {
-        getLocal,
+        intializeLibrary,
         libraryGenerate
     };
 })();
 
+const Storage = (() => {
+    const getLocal = () => {
+        const books = JSON.parse(localStorage.getItem('library'))
+        if (books) {
+            return books;
+          } else {
+            return [];
+          }
+    };
 
-Library.getLocal();
+    const saveLocal = (books) => {
+        localStorage.setItem('library', JSON.stringify(books))
+    };
+    
+    return {
+        getLocal,
+        saveLocal
+    };
+})();
+
+Library.intializeLibrary(Storage.getLocal());
 Library.libraryGenerate();
