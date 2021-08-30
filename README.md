@@ -4,6 +4,7 @@
 ----------------------
 * Local Storage enabled.
 * Bootstrap 5 used for styling.
+* Class
 
 
 ### Points of Improvement
