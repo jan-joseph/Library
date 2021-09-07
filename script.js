@@ -33,12 +33,12 @@ class library extends storage {
     }  
     
     // To Return a new Book Object taken from the Modal Form
-    _createNewBookObject (){
+    _createNewBookObject (bookName,authorName,pageNumber,readStatus){
         return {
-            title:document.getElementById('book-name').value,
-            author:document.getElementById('author-name').value,
-            numOfPages:document.getElementById('page-number').value,
-            readStatus:document.getElementById('readStatus').checked
+            title:bookName.value,
+            author:authorName.value,
+            numOfPages:pageNumber.value,
+            readStatus:readStatus.checked
         }
     }
 
@@ -124,11 +124,19 @@ class library extends storage {
     
     _formSubmit () {
         const addBookForm = document.getElementById('addBookForm');
+        const bookName = document.getElementById('book-name')
+        const authorName = document.getElementById('author-name')
+        const pageNumber = document.getElementById('page-number')
+        const readStatus = document.getElementById('readStatus')
 
-        this.myLibrary.push(this._createNewBookObject());
-        this.libraryGenerate();
-        this._hideBookForm();
-        addBookForm.reset();
+        if ( authorName.validity.valid && 
+            bookName.validity.valid && 
+            pageNumber.validity.valid){
+            this.myLibrary.push(this._createNewBookObject(bookName,authorName,pageNumber,readStatus));
+            this.libraryGenerate();
+            this._hideBookForm();
+            addBookForm.reset();
+        }
     }
 
 }
