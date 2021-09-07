@@ -35,13 +35,22 @@ class library extends storage {
     // To Return a new Book Object taken from the Modal Form
     _createNewBookObject (bookName,authorName,pageNumber,readStatus){
         return {
-            title:bookName.value,
-            author:authorName.value,
-            numOfPages:pageNumber.value,
-            readStatus:readStatus.checked
+            title:bookName,
+            author:authorName,
+            numOfPages:pageNumber,
+            readStatus:readStatus
         }
     }
 
+    _alreadyExisting(bookName,authorName){
+        this.myLibrary.forEach(book => {
+            if(book['title'] === bookName && book['author'] === authorName){
+                return true;
+                console.log('Existing');
+            }
+        });
+        return false;
+    }
     // Remove the Book from Library Grid
     _removeBook(e){
         const title = e.target.parentNode.firstChild.innerHTML.replaceAll('"', '')
@@ -132,10 +141,15 @@ class library extends storage {
         if ( authorName.validity.valid && 
             bookName.validity.valid && 
             pageNumber.validity.valid){
-            this.myLibrary.push(this._createNewBookObject(bookName,authorName,pageNumber,readStatus));
-            this.libraryGenerate();
-            this._hideBookForm();
-            addBookForm.reset();
+
+                if(!this._alreadyExisting(bookName,authorName)){
+                    this.myLibrary.push(this._createNewBookObject(bookName.value,authorName.value,pageNumber.value,readStatus.checked));
+                    this.libraryGenerate();
+                    this._hideBookForm();
+                    addBookForm.reset();
+                } else {
+                    bookName.setAttribute('title', 'Entry already existing');
+                }
         }
     }
 
