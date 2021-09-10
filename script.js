@@ -41,15 +41,15 @@ class library extends storage {
             readStatus:readStatus
         }
     }
-
+    // Check if the Book is already present in the db
     _alreadyExisting(bookName,authorName){
+        let flag = false;
         this.myLibrary.forEach(book => {
-            if(book['title'] === bookName && book['author'] === authorName){
-                return true;
-                console.log('Existing');
+            if((book['title'] == bookName) && (book['author'] == authorName)){
+                flag = true;
             }
         });
-        return false;
+        return flag;
     }
     // Remove the Book from Library Grid
     _removeBook(e){
@@ -138,25 +138,31 @@ class library extends storage {
         const pageNumber = document.getElementById('page-number')
         const readStatus = document.getElementById('readStatus')
 
+        pageNumber.addEventListener('input',(e) => {
+            if(e.target.validity.valid){
+                if(this._alreadyExisting(bookName.value,authorName.value)){
+                    bookName.setCustomValidity("Book Entry already exisiting");
+                    bookName.reportValidity();
+                }
+            }
+        });
         if ( authorName.validity.valid && 
             bookName.validity.valid && 
             pageNumber.validity.valid){
 
-                if(!this._alreadyExisting(bookName,authorName)){
+                if(!this._alreadyExisting(bookName.value,authorName.value)){
                     this.myLibrary.push(this._createNewBookObject(bookName.value,authorName.value,pageNumber.value,readStatus.checked));
                     this.libraryGenerate();
                     this._hideBookForm();
                     addBookForm.reset();
                 } else {
                     bookName.setAttribute('title', 'Entry already existing');
+                    console.log('exisiting');
                 }
         }
     }
 
 }
-
-// Library.intializeLibrary(Storage.getLocal());
-// Library.libraryGenerate();
 
 const libraryClass = new library();
 libraryClass.libraryGenerate();
