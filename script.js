@@ -115,11 +115,30 @@ class library extends storage {
         const addBookBtn = document.getElementById('add-book');
         const submitBtn = document.getElementById('submit-btn');
         const libraryGrid = document.getElementById('library');
+        const addBookForm = document.getElementById('addBookForm');
+        const bookName = document.getElementById('book-name');
+        const authorName = document.getElementById('author-name');
+        const pageNumber = document.getElementById('page-number');
+        const readStatus = document.getElementById('readStatus');
         
         // Event Listerners
         addBookBtn.addEventListener('click', (e) => this._showBookForm(e));
         this.overlay.addEventListener('click', () => this._hideBookForm());
-        submitBtn.addEventListener('click',() => this._formSubmit());
+
+
+
+        pageNumber.addEventListener('input',(e) => {
+            if(e.target.validity.valid){
+                if(this._alreadyExisting(bookName.value,authorName.value)){
+                    bookName.setCustomValidity("Book is ready exisiting. Please enter another entry");
+                    bookName.reportValidity();
+                } else {
+                    bookName.setCustomValidity("")
+                }
+            }
+        });
+
+        submitBtn.addEventListener('click',() => this._formSubmit(bookName,authorName,pageNumber,readStatus));
 
         while(libraryGrid.firstChild){
             libraryGrid.firstChild.remove();
@@ -131,21 +150,8 @@ class library extends storage {
         super.saveLocal(this.myLibrary);
     }
     
-    _formSubmit () {
-        const addBookForm = document.getElementById('addBookForm');
-        const bookName = document.getElementById('book-name')
-        const authorName = document.getElementById('author-name')
-        const pageNumber = document.getElementById('page-number')
-        const readStatus = document.getElementById('readStatus')
+    _formSubmit (bookName,authorName,pageNumber,readStatus) {
 
-        pageNumber.addEventListener('input',(e) => {
-            if(e.target.validity.valid){
-                if(this._alreadyExisting(bookName.value,authorName.value)){
-                    bookName.setCustomValidity("Book Entry already exisiting");
-                    bookName.reportValidity();
-                }
-            }
-        });
         if ( authorName.validity.valid && 
             bookName.validity.valid && 
             pageNumber.validity.valid){
@@ -155,9 +161,6 @@ class library extends storage {
                     this.libraryGenerate();
                     this._hideBookForm();
                     addBookForm.reset();
-                } else {
-                    bookName.setAttribute('title', 'Entry already existing');
-                    console.log('exisiting');
                 }
         }
     }
